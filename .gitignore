@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pkl
+*.h5
+*.weights.h5
+asl_alphabet_train/
+data_collection/asl_landmarks.csv
+data_collection/my_signs.csv
+data_collection/dynamic_signs/
+*.zip
+.env
