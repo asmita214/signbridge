@@ -21,27 +21,29 @@ SignBridge solves this by acting as a real-time bridge — a deaf person signs i
 ---
 
 ## How It Works
+
+```
 Webcam Feed
-↓
+    ↓
 MediaPipe Hand Detection (21 landmark points)
-↓
+    ↓
 Feature Extraction (63 coordinate values per frame)
-↓
-┌─────────────────────────────────────┐
-│  LETTER MODE        │  WORD MODE    │
-│  Random Forest      │  LSTM         │
-│  Neural Network     │  (sequences)  │
-│  Ensemble           │               │
-└─────────────────────────────────────┘
-↓
+    ↓
+┌──────────────────────┬───────────────────────┐
+│     LETTER MODE      │      WORD MODE        │
+│  Random Forest +     │  LSTM on 30-frame     │
+│  Neural Network      │  movement sequences   │
+│  Ensemble            │                       │
+└──────────────────────┴───────────────────────┘
+    ↓
 Stability Buffer + Majority Voting
-↓
+    ↓
 Word Builder → Sentence Builder
-↓
+    ↓
 Gemini 1.5 Flash (Grammar Correction)
-↓
+    ↓
 Text Output + Speech Output
----
+```
 
 ## Model Architecture & Accuracy
 
@@ -96,30 +98,30 @@ Text Output + Speech Output
 
 **Why self-collected data matters:** The Kaggle dataset was recorded in controlled studio conditions. Real webcams have different lighting, backgrounds, and angles. Adding 200 personal samples per class improved real-world accuracy from ~15% confidence to 99%+ confidence — a direct demonstration of domain adaptation.
 
----
-
 ## Project Structure
+
+```
 signbridge/
-├── app.py                          ← main application
+├── app.py                              ← main application
 ├── data_collection/
-│   ├── extract_landmarks.py        ← processes Kaggle images to CSV
-│   ├── record_dynamic_signs.py     ← records dynamic sign sequences
-│   └── collect_my_signs.py         ← collects personal webcam data
+│   ├── extract_landmarks.py            ← processes Kaggle images to CSV
+│   ├── record_dynamic_signs.py         ← records dynamic sign sequences
+│   └── collect_my_signs.py             ← collects personal webcam data
 ├── training/
-│   ├── train_all.py                ← trains RF + NN + LSTM locally
-│   └── retrain_with_mydata.py      ← retrains with personal + Kaggle data
+│   ├── train_all.py                    ← trains RF + NN + LSTM locally
+│   └── retrain_with_mydata.py          ← retrains with personal + Kaggle data
 ├── models/
-│   ├── rf_model.pkl                ← trained Random Forest
-│   ├── label_encoder.pkl           ← class label mapping
-│   ├── le_dynamic.pkl              ← dynamic sign label mapping
-│   ├── nn_weights.weights.h5       ← Neural Network weights
-│   └── lstm_weights.weights.h5     ← LSTM weights
+│   ├── rf_model.pkl                    ← trained Random Forest
+│   ├── label_encoder.pkl               ← class label mapping
+│   ├── le_dynamic.pkl                  ← dynamic sign label mapping
+│   ├── nn_weights.weights.h5           ← Neural Network weights
+│   └── lstm_weights.weights.h5         ← LSTM weights
 ├── backend/
-│   ├── main.py                     ← FastAPI + WebSocket server
-│   ├── predictor.py                ← model inference
-│   └── gemini_service.py           ← Gemini API integration
+│   ├── main.py                         ← FastAPI + WebSocket server
+│   ├── predictor.py                    ← model inference
+│   └── gemini_service.py               ← Gemini API integration
 └── requirements.txt
----
+```
 
 ## Setup & Run
 
