@@ -8,7 +8,7 @@ SignBridge is an end-to-end machine learning system that detects American Sign L
 
 ## Demo
 
-📹 [Watch Full Demo]([https://drive.google.com/drive/folders/1ax-sblIXj_FCCo5OqLu723BcedODLPxE])
+📹 [Watch Full Demo](https://drive.google.com/drive/folders/1ax-sb1IXj_FCCo50qLu723BcedODLPxE)
 
 ---
 
